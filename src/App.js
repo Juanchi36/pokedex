@@ -1,24 +1,30 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import TopBar from './components/AppBar/TopBar';
+import Content from './views/Content/Content';
+import ImageContext from './contexts/ImageContext';
+import UrlContext from './contexts/UrlContext';
+import PokeContext from './contexts/PokeContext';
+import LanguageContext from './contexts/LanguageContext';
 
 function App() {
+  const [image, setImage] = useState('');
+  const [nextUrl, setNextUrl] = useState('https://pokeapi.co/api/v2/pokemon/?limit=5');
+  const [prevUrl, setPrevUrl] = useState('');
+  const [currentPokemon, setCurrentPokemon] = useState({});
+  const [language, setLanguage] = useState(true);
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <LanguageContext.Provider value={{ language, setLanguage }}>
+        <ImageContext.Provider value={{ image, setImage }}>
+          <UrlContext.Provider value={{ nextUrl, prevUrl, setNextUrl, setPrevUrl }}>
+            <PokeContext.Provider value={{ currentPokemon, setCurrentPokemon }}>
+              <TopBar />
+              <Content />
+            </PokeContext.Provider>
+          </UrlContext.Provider>
+        </ImageContext.Provider>
+      </LanguageContext.Provider>
     </div>
   );
 }
